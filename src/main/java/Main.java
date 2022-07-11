@@ -1,9 +1,9 @@
 import java.net.URI;
 import java.net.http.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 public class Main {
 
@@ -24,17 +24,34 @@ public class Main {
 
         String movies = extractItemsFromMovies(response.body());
 
-        List<String> titles = parseAttributes(movies, "title");
-        titles.forEach(System.out::println);
+        List<Movie> parse = parseToMovie(movies);
+        parse.forEach(System.out::println);
+    }
 
-        List<String> urlImages = parseAttributes(movies, "image");
-        urlImages.forEach(System.out::println);
+    private static List<Movie> parseToMovie(String moviesArray) {
+        List<Movie> movies = new ArrayList<>();
 
-        List<String> years = parseAttributes(movies, "year");
-        years.forEach(System.out::println);
+        List<String> ids = parseAttributes(moviesArray, "id");
+        List<String> ranks = parseAttributes(moviesArray, "rank");
+        List<String> titles = parseAttributes(moviesArray, "title");
+        List<String> urls = parseAttributes(moviesArray, "image");
+        List<String> ratings = parseAttributes(moviesArray, "imDbRating");
+        List<String> years = parseAttributes(moviesArray, "year");
 
-        List<String> ratings = parseAttributes(movies, "imDbRating");
-        ratings.forEach(System.out::println);
+        IntSummaryStatistics stats = Stream.<List<?>>of(ids, ranks, titles, urls, ratings, years)
+                .mapToInt(List::size)
+                .summaryStatistics();
+
+        if (stats.getMin() == stats.getMax()) {
+            int size = ids.size();
+            for (int i = 0; i < size; i++) {
+                movies.add(new Movie(ids.get(i), ranks.get(i), titles.get(i), urls.get(i), ratings.get(i), years.get(i)));
+            }
+        } else {
+            throw new IndexOutOfBoundsException("lists size doesn't match");
+        }
+
+        return movies;
     }
 
     static String extractItemsFromMovies(String json) {
