@@ -1,3 +1,4 @@
+import java.io.PrintWriter;
 import java.net.URI;
 import java.net.http.*;
 import java.util.*;
@@ -22,10 +23,14 @@ public class Main {
         System.out.println("Status: " + response.statusCode());
         System.out.println(response.body());
 
-        String movies = extractItemsFromMovies(response.body());
+        String items = extractItemsFromMovies(response.body());
 
-        List<Movie> parse = parseToMovie(movies);
-        parse.forEach(System.out::println);
+        List<Movie> movies = parseToMovie(items);
+        movies.forEach(System.out::println);
+
+        PrintWriter writer = new PrintWriter("movies.html");
+        new HTMLGenerator(writer).generate(movies);
+        writer.close();
     }
 
     private static List<Movie> parseToMovie(String moviesArray) {
