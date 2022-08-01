@@ -7,7 +7,7 @@ public class Main {
         String apiKey = System.getenv("IMDb_KEY");
 
         String json = new ImdbApiClient(apiKey).getBody();
-        List<Movie> movies = new ImdbMovieJsonParser(json).parseToMovie();
+        List<Movie> movies = new ImdbMovieJsonParser(json).parse();
         movies.forEach(System.out::println);
 
         PrintWriter writer = new PrintWriter("movies.html");

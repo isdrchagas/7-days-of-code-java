@@ -3,7 +3,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-public class ImdbMovieJsonParser {
+public class ImdbMovieJsonParser implements JsonParser {
 
     private String json;
 
@@ -11,7 +11,8 @@ public class ImdbMovieJsonParser {
         this.json = json;
     }
 
-    public List<Movie> parseToMovie() {
+    @Override
+    public List<Movie> parse() {
         String moviesArray = extractItemsFromMovies(json);
         List<Movie> movies = new ArrayList<>();
 

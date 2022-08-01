@@ -1,4 +1,4 @@
-public class Movie {
+public class Movie implements Content {
 
     private String id;
     private String rank;
@@ -16,19 +16,23 @@ public class Movie {
         this.year = year;
     }
 
-    public String getTitle() {
+    @Override
+    public String title() {
         return title;
     }
 
-    public String getUrlImage() {
+    @Override
+    public String urlImage() {
         return urlImage;
     }
 
-    public String getRating() {
+    @Override
+    public String rating() {
         return rating;
     }
 
-    public String getYear() {
+    @Override
+    public String year() {
         return year;
     }
 

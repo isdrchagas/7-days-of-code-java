@@ -31,7 +31,7 @@ public class HTMLGenerator {
                              </body>
                            </html>
                     """;
-            out.println(String.format(htmlTemplate, movie.getTitle(), movie.getUrlImage(), movie.getTitle(), movie.getRating(), movie.getYear()));
+            out.println(String.format(htmlTemplate, movie.title(), movie.urlImage(), movie.title(), movie.rating(), movie.year()));
         });
     }
 }
